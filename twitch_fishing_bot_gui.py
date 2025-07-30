@@ -8,8 +8,15 @@ import json
 import webbrowser
 import os
 
-SETTINGS_FILE = "settings.json"
+APPDATA_DIR = os.getenv('APPDATA') + r"\TwitchFishingBot"
+SETTINGS_FILE = APPDATA_DIR + r"\settings.json"
 TOKEN_URL = "https://twitchtokengenerator.com/"
+
+try:
+    os.makedirs(APPDATA_DIR, exist_ok=True)
+    print(f"Directory '{APPDATA_DIR}' created or already exists.")
+except OSError as e:
+    print(f"Error creating directory: {e}")
 
 class TwitchFishingBotGUI:
     def __init__(self, root):
@@ -183,7 +190,7 @@ class TwitchFishingBotGUI:
             json.dump(data, f)
 
     def load_settings(self):
-        if os.path.exists(SETTINGS_FILE):
+        if os.path.isfile(SETTINGS_FILE):
             with open(SETTINGS_FILE, "r") as f:
                 data = json.load(f)
             for k, v in data.items():
